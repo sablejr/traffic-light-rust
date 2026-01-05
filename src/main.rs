@@ -31,6 +31,7 @@ impl Controller {
         println!("Light {}: {:?} {}", i, light.state, marker);
     }
 
+    // copy active_index value so you read then mutate light (this way you are not immutably and mutuably borrowing active_index, this ends the borrow immediately and active_index is independent of self)    
     let active_index = self.active_index;
     let active_light = &mut self.lights[active_index];
 
