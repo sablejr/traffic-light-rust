@@ -25,24 +25,24 @@ impl Controller {
     fn tick(&mut self) {
         println!("--- TICK ---");
 
-    // Print all lights and their states
-    for (i, light) in self.lights.iter().enumerate() {
-        let marker = if i == self.active_index { "<-- active" } else { "" };
-        println!("Light {}: {:?} {}", i, light.state, marker);
-    }
-
-    // copy active_index value so you read then mutate light (this way you are not immutably and mutuably borrowing active_index, this ends the borrow immediately and active_index is independent of self)    
-    let active_index = self.active_index;
-    let active_light = &mut self.lights[active_index];
-
-     thread::sleep(active_light.duration);
-
-     active_light.state = next_state(&active_light.state);
-     active_light.duration = transition_time(&active_light.state);
-
-     if active_light.state == LightColor::Red {
-            self.active_index = (self.active_index +1) % self.lights.len();
+        // Print all lights and their states
+        for (i, light) in self.lights.iter().enumerate() {
+            let marker = if i == self.active_index { "<-- active" } else { "" };
+            println!("Light {}: {:?} {}", i, light.state, marker);
         }
+    
+        // copy active_index value so you read then mutate light (this way you are not immutably and mutuably borrowing active_index, this ends the borrow immediately and active_index is independent of self)    
+        let active_index = self.active_index;
+        let active_light = &mut self.lights[active_index];
+    
+         thread::sleep(active_light.duration);
+    
+         active_light.state = next_state(&active_light.state);
+         active_light.duration = transition_time(&active_light.state);
+    
+         if active_light.state == LightColor::Red {
+                self.active_index = (self.active_index +1) % self.lights.len();
+            }
     }
 }
 
